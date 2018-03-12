@@ -230,21 +230,6 @@ function inject(state, action, props, scenes) {
       state.children.forEach((c, i) => { if (c.sceneKey === action.key) { ind = i; } });
       assert(ind !== -1, `Cannot find route with key=${action.key} for parent=${state.key}`);
 
-      const activeChild = state.children[state.index];
-      const incomingChild = state.children[ind];
-
-      const incomingChildHadTabs = incomingChild.tabs;
-      const incomingChildWasActive = incomingChild.children.length > 1;
-      const activeChildIsIncomingChild = activeChild.sceneKey === action.key;
-      if (incomingChildHadTabs || !incomingChildWasActive || activeChildIsIncomingChild) {
-        state.children[ind] = getInitialState(
-          { ...props },
-          scenes,
-          state.index,
-          { ...action, parentIndex: state.children[ind].parentIndex },
-        );
-      }
-
       if (action.unmountScenes) {
         const rState = resetHistoryStack(state);
         return { ...rState, index: ind };
